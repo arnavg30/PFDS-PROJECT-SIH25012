@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Records - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Admin Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Overview</li>
+        <li><a href="dashboard.html" class="nav-item-link"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+
+        <li class="sidebar-section-title">Academic Management</li>
+        <li><a href="students.html" class="nav-item-link"><i class="bi bi-people-fill"></i> <span>Students</span></a></li>
+        <li><a href="teachers.html" class="nav-item-link"><i class="bi bi-person-badge-fill"></i> <span>Teachers</span></a></li>
+        <li><a href="parents.html" class="nav-item-link"><i class="bi bi-person-heart"></i> <span>Parents</span></a></li>
+        <li><a href="classes.html" class="nav-item-link"><i class="bi bi-door-open-fill"></i> <span>Classes</span></a></li>
+
+        <li class="sidebar-section-title">Records & Governance</li>
+        <li><a href="attendance.html" class="nav-item-link active"><i class="bi bi-calendar2-check-fill"></i> <span>Attendance Records</span></a></li>
+        <li><a href="reports.html" class="nav-item-link"><i class="bi bi-file-earmark-bar-graph-fill"></i> <span>Reports & Analytics</span></a></li>
+        <li><a href="audit_logs.html" class="nav-item-link"><i class="bi bi-shield-shaded"></i> <span>Audit Logs</span></a></li>
+        <li><a href="settings.html" class="nav-item-link"><i class="bi bi-gear-fill"></i> <span>Settings</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar bg-primary text-white">AD</div>
+          <div class="user-info">
+            <div class="user-name">Dr. Rajesh V.</div>
+            <div class="user-role-label">Principal / Admin</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <h1 class="page-title">Master Attendance Records & Corrections</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-outline-secondary btn-sm" onclick="exportTableToCSV('adminAttendanceRecordsTable', 'attendance_audit_export.csv')">
+            <i class="bi bi-download me-1"></i> Export Records
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- Security / Policy Warning Banner -->
+        <div class="alert alert-light border shadow-sm rounded-3 py-2 px-3 small d-flex align-items-center justify-content-between mb-4">
+          <div class="d-flex align-items-center gap-2 text-secondary">
+            <i class="bi bi-shield-lock-fill text-primary fs-5"></i>
+            <div>
+              <strong>Audit Enforcement Policy:</strong> Finalized student records cannot be hard deleted. Any correction requested by administrators requires mandatory justification logging for state educational compliance.
+            </div>
+          </div>
+          <span class="badge bg-secondary-subtle text-secondary">SIH25012 Integrity Shield</span>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="card border bg-white p-3 rounded-3 shadow-sm mb-4">
+          <div class="row g-3">
+            <div class="col-md-2">
+              <label class="form-label small text-muted mb-1">Date</label>
+              <input type="date" class="form-control form-control-sm" value="2026-10-17">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small text-muted mb-1">Class</label>
+              <select class="form-select form-select-sm">
+                <option value="">All Classes</option>
+                <option value="8A" selected>Class 8A</option>
+                <option value="9B">Class 9B</option>
+                <option value="10A">Class 10A</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small text-muted mb-1">Method</label>
+              <select class="form-select form-select-sm">
+                <option value="">All Methods</option>
+                <option value="Face">Face Recognition</option>
+                <option value="QR">QR Code</option>
+                <option value="Manual">Manual Fallback</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small text-muted mb-1">Status</label>
+              <select class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                <option value="Present">Present</option>
+                <option value="Needs Review">Needs Review</option>
+                <option value="Absent">Absent</option>
+              </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+              <input type="text" class="form-control form-control-sm" placeholder="Search student name or ID..." data-table-search="adminAttendanceRecordsTable">
+              <button class="btn btn-primary btn-sm px-3" onclick="showToast('Filter Applied', 'Filtered records for Class 8A', 'info')">Filter</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance Records Table -->
+        <div class="content-card">
+          <div class="content-card-body p-0">
+            <div class="table-responsive">
+              <table class="custom-table" id="adminAttendanceRecordsTable">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Student Details</th>
+                    <th>Class</th>
+                    <th>Date & Time</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Teacher in Charge</th>
+                    <th class="text-end">Admin Correction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="record-row-REC-8801">
+                    <td><code>#REC-8801</code></td>
+                    <td>
+                      <strong>Aarav Sharma</strong>
+                      <div class="text-muted small">STU-101 | Roll 01</div>
+                    </td>
+                    <td>Class 8A</td>
+                    <td>17 Oct 2026, 08:45 AM</td>
+                    <td><span class="badge bg-light text-dark border">Face Match (96%)</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td>Sunita Devi</td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-warning py-1" onclick="openAdminCorrectionModal('REC-8801', 'Aarav Sharma', 'Present')">
+                        <i class="bi bi-pencil-square me-1"></i> Correct
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr id="record-row-REC-8802">
+                    <td><code>#REC-8802</code></td>
+                    <td>
+                      <strong>Ananya Patel</strong>
+                      <div class="text-muted small">STU-102 | Roll 02</div>
+                    </td>
+                    <td>Class 8A</td>
+                    <td>17 Oct 2026, 08:45 AM</td>
+                    <td><span class="badge bg-light text-dark border">Face Match (92%)</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td>Sunita Devi</td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-warning py-1" onclick="openAdminCorrectionModal('REC-8802', 'Ananya Patel', 'Present')">
+                        <i class="bi bi-pencil-square me-1"></i> Correct
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr id="record-row-REC-8803">
+                    <td><code>#REC-8803</code></td>
+                    <td>
+                      <strong>Rohan Verma</strong>
+                      <div class="text-muted small">STU-103 | Roll 03</div>
+                    </td>
+                    <td>Class 8A</td>
+                    <td>17 Oct 2026, 08:45 AM</td>
+                    <td><span class="badge bg-light text-dark border">Face Match (61%)</span></td>
+                    <td><span class="badge-status badge-review status-indicator"><i class="bi bi-exclamation-triangle-fill"></i> Needs Review</span></td>
+                    <td>Sunita Devi</td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-warning py-1" onclick="openAdminCorrectionModal('REC-8803', 'Rohan Verma', 'Needs Review')">
+                        <i class="bi bi-pencil-square me-1"></i> Correct
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr id="record-row-REC-8804">
+                    <td><code>#REC-8804</code></td>
+                    <td>
+                      <strong>Kabir Das</strong>
+                      <div class="text-muted small">STU-105 | Roll 05</div>
+                    </td>
+                    <td>Class 8A</td>
+                    <td>17 Oct 2026, 08:45 AM</td>
+                    <td><span class="badge bg-light text-dark border">Photo Scan Fail</span></td>
+                    <td><span class="badge-status badge-absent status-indicator"><i class="bi bi-x-circle-fill"></i> Absent</span></td>
+                    <td>Sunita Devi</td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-warning py-1" onclick="openAdminCorrectionModal('REC-8804', 'Kabir Das', 'Absent')">
+                        <i class="bi bi-pencil-square me-1"></i> Correct
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Admin Record Correction Modal with Mandatory Justification Reason -->
+  <div class="modal fade" id="adminCorrectionModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-warning-subtle text-dark border-bottom">
+          <h5 class="modal-title fw-bold"><i class="bi bi-shield-exclamation text-warning me-2"></i>Official Record Correction</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <input type="hidden" id="modalCorrectionRecordId">
+          <div class="p-3 bg-light rounded-3 mb-3 border">
+            <div class="d-flex justify-content-between small text-secondary mb-1">
+              <span>Student:</span>
+              <strong id="modalCorrectionStudentName" class="text-dark">Aarav Sharma</strong>
+            </div>
+            <div class="d-flex justify-content-between small text-secondary">
+              <span>Original Recorded Status:</span>
+              <span id="modalCorrectionCurrentStatus" class="fw-bold text-dark">Present</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-secondary">New Corrected Status *</label>
+            <select class="form-select" id="modalCorrectionNewStatus">
+              <option value="Present">Present (Verified)</option>
+              <option value="Absent">Absent (Excused / Unexcused)</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-secondary">Reason for Correction (Mandatory Audit Justification) *</label>
+            <textarea class="form-control" id="modalCorrectionReason" rows="3" placeholder="e.g. Student reported to medical dispensary during 1st period; confirmed present on campus." required></textarea>
+            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>This reason, your Administrator ID, and current timestamp will be permanently written to the non-repudiation audit trail.</small>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-warning fw-semibold px-4" onclick="saveAdminCorrection()">Commit Correction</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+  <script src="../../static/js/attendance.js"></script>
+</body>
+</html>

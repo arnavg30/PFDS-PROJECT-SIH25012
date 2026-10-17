@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Dashboard - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Parent Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Parent Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Parent Menu</li>
+        <li><a href="dashboard.html" class="nav-item-link active"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+        <li><a href="children.html" class="nav-item-link"><i class="bi bi-people-fill"></i> <span>My Children</span></a></li>
+        <li><a href="attendance_history.html" class="nav-item-link"><i class="bi bi-calendar2-check-fill"></i> <span>Child Attendance</span></a></li>
+        <li><a href="statistics.html" class="nav-item-link"><i class="bi bi-pie-chart-fill"></i> <span>Statistics</span></a></li>
+        <li><a href="notifications.html" class="nav-item-link"><i class="bi bi-bell-fill"></i> <span>Notifications</span></a></li>
+        <li><a href="profile.html" class="nav-item-link"><i class="bi bi-person-circle"></i> <span>Profile</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" style="background: #FD7E14;">MS</div>
+          <div class="user-info">
+            <div class="user-name">Manoj Sharma</div>
+            <div class="user-role-label">Parent / Guardian</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <div>
+            <h1 class="page-title">Parent Dashboard</h1>
+            <small class="text-muted">Govt High School Rampur | Parent Attendance Monitoring</small>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Multi-Child Selector -->
+          <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small d-none d-sm-inline">Select Child:</span>
+            <select class="form-select form-select-sm" id="childSelector" style="width: 170px;" onchange="showToast('Child Switched', `Viewing attendance records for ${this.options[this.selectedIndex].text}`, 'info')">
+              <option value="aarav" selected>Aarav Sharma (8A)</option>
+              <option value="diya">Diya Sharma (5B)</option>
+            </select>
+          </div>
+
+          <!-- Role Switcher -->
+          <div class="d-none d-md-flex align-items-center ms-2 me-2">
+            <select class="form-select form-select-sm" id="demoRoleSelector" style="width: 110px;">
+              <option value="parent" selected>Parent</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn-theme-toggle" title="Toggle Dark/Light Mode">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- Child Overview Banner -->
+        <div class="card border rounded-3 p-4 bg-white shadow-sm mb-4">
+          <div class="row align-items-center g-3">
+            <div class="col-md-7">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-primary-subtle text-primary fw-bold d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                  AS
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-0">Aarav Sharma</h4>
+                  <p class="text-muted small mb-0">Class 8th - Section A | Roll 01 | Class Teacher: Sunita Devi</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 text-md-end">
+              <span class="badge-status badge-present fs-6 px-3 py-2">
+                <i class="bi bi-check-circle-fill"></i> Marked Present Today (08:45 AM)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Statistics Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Attendance Rate</div>
+                <div class="stat-value text-success">96.2%</div>
+                <div class="stat-trend text-success"><i class="bi bi-shield-check me-1"></i> Excellent Record</div>
+              </div>
+              <div class="stat-icon icon-green"><i class="bi bi-percent"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Days Present</div>
+                <div class="stat-value">51</div>
+                <div class="stat-trend text-muted">Out of 53 school days</div>
+              </div>
+              <div class="stat-icon icon-blue"><i class="bi bi-check-square"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Days Absent</div>
+                <div class="stat-value text-danger">2</div>
+                <div class="stat-trend text-muted">Excused medical leaves</div>
+              </div>
+              <div class="stat-icon icon-red"><i class="bi bi-x-circle"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Recent Absences</div>
+                <div class="stat-value">1</div>
+                <div class="stat-trend text-muted">13 Oct 2026 (Mon)</div>
+              </div>
+              <div class="stat-icon icon-orange"><i class="bi bi-clock-history"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance Trends Chart & Notifications -->
+        <div class="row g-4 mb-4">
+          <div class="col-lg-8">
+            <div class="content-card h-100">
+              <div class="content-card-header">
+                <h5 class="content-card-title"><i class="bi bi-graph-up text-primary"></i> Monthly Attendance Trend (Aarav Sharma)</h5>
+              </div>
+              <div class="content-card-body">
+                <div style="height: 250px;">
+                  <canvas id="parentTrendChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card border rounded-3 p-4 bg-white shadow-sm h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-dark mb-0"><i class="bi bi-bell text-primary me-2"></i>Recent SMS & App Alerts</h6>
+                <a href="notifications.html" class="small text-decoration-none">View All</a>
+              </div>
+              
+              <div class="d-flex flex-column gap-3 small">
+                <div class="p-2 bg-light rounded border">
+                  <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.72rem;">
+                    <span>Arrival SMS</span>
+                    <span>Today, 08:48 AM</span>
+                  </div>
+                  <strong class="text-success"><i class="bi bi-check-circle me-1"></i>Aarav arrived safely at school</strong>
+                  <div class="text-muted">Recorded via Classroom Face Recognition.</div>
+                </div>
+
+                <div class="p-2 bg-light rounded border">
+                  <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.72rem;">
+                    <span>Absence Notification</span>
+                    <span>13 Oct, 09:15 AM</span>
+                  </div>
+                  <strong class="text-danger"><i class="bi bi-x-circle me-1"></i>Aarav was absent for Morning Assembly</strong>
+                  <div class="text-muted">Marked by Sunita Devi (Sick leave verified).</div>
+                </div>
+
+                <div class="p-2 bg-light rounded border">
+                  <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.72rem;">
+                    <span>Monthly Bulletin</span>
+                    <span>01 Oct, 10:00 AM</span>
+                  </div>
+                  <strong class="text-primary"><i class="bi bi-file-earmark-text me-1"></i>September report card published</strong>
+                  <div class="text-muted">Monthly attendance was 98.1%.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance History Table -->
+        <div class="content-card">
+          <div class="content-card-header">
+            <h5 class="content-card-title"><i class="bi bi-table text-primary"></i> Attendance History for Aarav Sharma</h5>
+            <a href="attendance_history.html" class="small text-decoration-none">Search Detailed Records &rarr;</a>
+          </div>
+          <div class="content-card-body p-0">
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Class Session</th>
+                    <th>Status</th>
+                    <th>Verification Mode</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Today (17 Oct 2026)</td>
+                    <td>Class 8A - Assembly</td>
+                    <td><span class="badge-status badge-present"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td><span class="badge bg-light text-dark border">Face Match (96%)</span></td>
+                    <td class="text-muted small">Punctual arrival</td>
+                  </tr>
+                  <tr>
+                    <td>16 Oct 2026</td>
+                    <td>Class 8A - Assembly</td>
+                    <td><span class="badge-status badge-present"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td><span class="badge bg-light text-dark border">Face Match (94%)</span></td>
+                    <td class="text-muted small">-</td>
+                  </tr>
+                  <tr>
+                    <td>15 Oct 2026</td>
+                    <td>Class 8A - Assembly</td>
+                    <td><span class="badge-status badge-present"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td><span class="badge bg-light text-dark border">QR Scan (Geo-verified)</span></td>
+                    <td class="text-muted small">-</td>
+                  </tr>
+                  <tr>
+                    <td>13 Oct 2026</td>
+                    <td>Class 8A - Assembly</td>
+                    <td><span class="badge-status badge-absent"><i class="bi bi-x-circle-fill"></i> Absent</span></td>
+                    <td><span class="badge bg-light text-secondary border">Unverified</span></td>
+                    <td class="text-muted small">Sick leave sanctioned</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+  <script src="../../static/js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initAttendanceTrendChart('parentTrendChart');
+    });
+  </script>
+</body>
+</html>

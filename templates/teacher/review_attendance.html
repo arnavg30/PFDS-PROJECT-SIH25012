@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Review & Submission - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Teacher Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Teaching Workspace</li>
+        <li><a href="dashboard.html" class="nav-item-link"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+        <li><a href="classes.html" class="nav-item-link"><i class="bi bi-collection-fill"></i> <span>My Classes</span></a></li>
+        <li><a href="take_attendance.html" class="nav-item-link"><i class="bi bi-camera-fill text-warning"></i> <span>Take Attendance</span></a></li>
+
+        <li class="sidebar-section-title">Verification & Records</li>
+        <li><a href="review_attendance.html" class="nav-item-link active"><i class="bi bi-ui-checks"></i> <span>Attendance Review</span></a></li>
+        <li><a href="history.html" class="nav-item-link"><i class="bi bi-calendar2-range-fill"></i> <span>Attendance History</span></a></li>
+        <li><a href="reports.html" class="nav-item-link"><i class="bi bi-bar-chart-line-fill"></i> <span>Class Reports</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" style="background: #00796B;">SD</div>
+          <div class="user-info">
+            <div class="user-name">Sunita Devi</div>
+            <div class="user-role-label">Class Teacher - 8A</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <h1 class="page-title">Attendance Review & Lockdown</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-outline-secondary btn-sm" id="btnSaveDraft" onclick="showToast('Draft Saved', 'Attendance session saved as draft.', 'info')">
+            <i class="bi bi-floppy me-1"></i> Save Draft
+          </button>
+          <button class="btn btn-success btn-sm px-3 fw-bold" id="btnSubmitAttendance" onclick="confirmFinalSubmission('Class 8th - Section A')">
+            <i class="bi bi-lock-fill me-1"></i> Finalize & Lock Attendance
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- Submission Locked Banner (Appears after final submission) -->
+        <div id="submissionLockedBanner" class="alert alert-success border-success py-3 px-4 shadow-sm rounded-3 mb-4 d-none">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-3">
+              <i class="bi bi-shield-fill-check text-success fs-2"></i>
+              <div>
+                <h5 class="fw-bold mb-0 text-success">Attendance Session Submitted & Locked!</h5>
+                <p class="mb-0 text-secondary small" id="submissionTimestampText">Submitted & Locked</p>
+              </div>
+            </div>
+            <span class="badge bg-success px-3 py-2 fs-6">Non-Editable by Teacher</span>
+          </div>
+        </div>
+
+        <!-- Class Session Context -->
+        <div class="card border bg-white p-3 rounded-3 shadow-sm mb-4">
+          <div class="row align-items-center g-3">
+            <div class="col-md-5">
+              <h5 class="fw-bold text-dark mb-0">Class 8th - Section A | Morning Attendance</h5>
+              <div class="text-muted small">Date: 17 Oct 2026 | Teacher: Sunita Devi</div>
+            </div>
+            <div class="col-md-7 text-md-end">
+              <!-- Three Status Metric Cards / Filter Buttons -->
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-success active" data-status-filter="all" data-target-table="attendanceReviewTable">
+                  All Students (<span id="countTotal">8</span>)
+                </button>
+                <button type="button" class="btn btn-outline-success" data-status-filter="present" data-target-table="attendanceReviewTable">
+                  <i class="bi bi-check-circle-fill me-1"></i> Present (<span id="countPresent">5</span>)
+                </button>
+                <button type="button" class="btn btn-outline-warning text-dark" data-status-filter="needs-review" data-target-table="attendanceReviewTable">
+                  <i class="bi bi-exclamation-triangle-fill me-1"></i> Needs Review (<span id="countReview">2</span>)
+                </button>
+                <button type="button" class="btn btn-outline-danger" data-status-filter="absent" data-target-table="attendanceReviewTable">
+                  <i class="bi bi-x-circle-fill me-1"></i> Absent (<span id="countAbsent">1</span>)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-3">
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search student name or roll..." data-table-search="attendanceReviewTable">
+          </div>
+        </div>
+
+        <!-- Attendance Review Table -->
+        <div class="content-card">
+          <div class="content-card-body p-0">
+            <div class="table-responsive">
+              <table class="custom-table" id="attendanceReviewTable">
+                <thead>
+                  <tr>
+                    <th>Roll</th>
+                    <th>Student Details</th>
+                    <th>Verification Source</th>
+                    <th>Confidence / Signal</th>
+                    <th>Current Status</th>
+                    <th class="text-center">Teacher Action</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="rev-row-101" data-row-status="present">
+                    <td><strong>01</strong></td>
+                    <td>
+                      <strong>Aarav Sharma</strong>
+                      <div class="text-muted small">STU-101</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Face Match</span></td>
+                    <td><span class="badge bg-success-subtle text-success">96% High</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success active" onclick="toggleStudentStatus('rev-row-101', 'Present')">Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-101', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add remark..."></td>
+                  </tr>
+
+                  <tr id="rev-row-102" data-row-status="present">
+                    <td><strong>02</strong></td>
+                    <td>
+                      <strong>Ananya Patel</strong>
+                      <div class="text-muted small">STU-102</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Face Match</span></td>
+                    <td><span class="badge bg-success-subtle text-success">92% High</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success active" onclick="toggleStudentStatus('rev-row-102', 'Present')">Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-102', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add remark..."></td>
+                  </tr>
+
+                  <!-- Needs Review Item 1 -->
+                  <tr id="rev-row-103" data-row-status="needs-review" class="table-warning-subtle">
+                    <td><strong>03</strong></td>
+                    <td>
+                      <strong>Rohan Verma</strong>
+                      <div class="text-muted small">STU-103</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Face Match</span></td>
+                    <td><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> 61% Low</span></td>
+                    <td><span class="badge-status badge-review status-indicator"><i class="bi bi-exclamation-triangle-fill"></i> Needs Review</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success" onclick="toggleStudentStatus('rev-row-103', 'Present')">Confirm Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-103', 'Absent')">Mark Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" value="Glitch in classroom lighting; visually verified"></td>
+                  </tr>
+
+                  <tr id="rev-row-104" data-row-status="present">
+                    <td><strong>04</strong></td>
+                    <td>
+                      <strong>Priya Kumari</strong>
+                      <div class="text-muted small">STU-104</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">QR Scan</span></td>
+                    <td><span class="badge bg-success-subtle text-success">Campus GPS Match</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success active" onclick="toggleStudentStatus('rev-row-104', 'Present')">Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-104', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add remark..."></td>
+                  </tr>
+
+                  <!-- Absent Item -->
+                  <tr id="rev-row-105" data-row-status="absent">
+                    <td><strong>05</strong></td>
+                    <td>
+                      <strong>Kabir Das</strong>
+                      <div class="text-muted small">STU-105</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">None Detected</span></td>
+                    <td><span class="badge bg-secondary">0% Absent</span></td>
+                    <td><span class="badge-status badge-absent status-indicator"><i class="bi bi-x-circle-fill"></i> Absent</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success" onclick="toggleStudentStatus('rev-row-105', 'Present')">Mark Present</button>
+                        <button class="btn btn-outline-danger active" onclick="toggleStudentStatus('rev-row-105', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" value="Unexcused absence"></td>
+                  </tr>
+
+                  <tr id="rev-row-106" data-row-status="present">
+                    <td><strong>06</strong></td>
+                    <td>
+                      <strong>Sneha Gupta</strong>
+                      <div class="text-muted small">STU-106</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Face Match</span></td>
+                    <td><span class="badge bg-success-subtle text-success">94% High</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success active" onclick="toggleStudentStatus('rev-row-106', 'Present')">Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-106', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add remark..."></td>
+                  </tr>
+
+                  <!-- Needs Review Item 2 -->
+                  <tr id="rev-row-107" data-row-status="needs-review" class="table-warning-subtle">
+                    <td><strong>07</strong></td>
+                    <td>
+                      <strong>Vikram Singh</strong>
+                      <div class="text-muted small">STU-107</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Face Match</span></td>
+                    <td><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> 58% Low</span></td>
+                    <td><span class="badge-status badge-review status-indicator"><i class="bi bi-exclamation-triangle-fill"></i> Needs Review</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success" onclick="toggleStudentStatus('rev-row-107', 'Present')">Confirm Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-107', 'Absent')">Mark Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add reason..."></td>
+                  </tr>
+
+                  <tr id="rev-row-108" data-row-status="present">
+                    <td><strong>08</strong></td>
+                    <td>
+                      <strong>Isha Nair</strong>
+                      <div class="text-muted small">STU-108</div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">Manual Roster</span></td>
+                    <td><span class="badge bg-info-subtle text-info">Teacher Roll</span></td>
+                    <td><span class="badge-status badge-present status-indicator"><i class="bi bi-check-circle-fill"></i> Present</span></td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-success active" onclick="toggleStudentStatus('rev-row-108', 'Present')">Present</button>
+                        <button class="btn btn-outline-danger" onclick="toggleStudentStatus('rev-row-108', 'Absent')">Absent</button>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm row-remarks" placeholder="Add remark..."></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-4 bg-light border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="small text-muted">
+                <i class="bi bi-shield-lock me-1"></i> Once finalized, attendance locks and automatic SMS/portal alerts dispatch to parents.
+              </div>
+              <button class="btn btn-success px-4 fw-bold" onclick="confirmFinalSubmission('Class 8th - Section A')">
+                <i class="bi bi-lock-fill me-1"></i> Finalize & Lock Attendance
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Final Submission Confirmation Modal -->
+  <div class="modal fade" id="submitConfirmationModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold"><i class="bi bi-check2-circle me-2"></i>Finalize Attendance Submission</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="submitConfirmModalBody">
+          <!-- Populated by attendance.js -->
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel & Continue Review</button>
+          <button type="button" class="btn btn-success px-4 fw-bold" onclick="executeFinalSubmission()">Yes, Finalize & Lock</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+  <script src="../../static/js/attendance.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateReviewSummaryMetrics();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Notifications - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Parent Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Parent Menu</li>
+        <li><a href="dashboard.html" class="nav-item-link"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+        <li><a href="children.html" class="nav-item-link"><i class="bi bi-people-fill"></i> <span>My Children</span></a></li>
+        <li><a href="attendance_history.html" class="nav-item-link"><i class="bi bi-calendar2-check-fill"></i> <span>Child Attendance</span></a></li>
+        <li><a href="statistics.html" class="nav-item-link"><i class="bi bi-pie-chart-fill"></i> <span>Statistics</span></a></li>
+        <li><a href="notifications.html" class="nav-item-link active"><i class="bi bi-bell-fill"></i> <span>Notifications</span></a></li>
+        <li><a href="profile.html" class="nav-item-link"><i class="bi bi-person-circle"></i> <span>Profile</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" style="background: #FD7E14;">MS</div>
+          <div class="user-info">
+            <div class="user-name">Manoj Sharma</div>
+            <div class="user-role-label">Parent / Guardian</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <h1 class="page-title">Parent Alerts & SMS Broadcasts</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-outline-primary btn-sm" onclick="showToast('Cleared', 'Marked all notifications as read.', 'info')">
+            Mark all as read
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="card border bg-white p-3 rounded-3 shadow-sm mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-chat-left-dots-fill text-primary fs-3"></i>
+            <div>
+              <h6 class="fw-bold mb-0">Direct SMS & Web Sync (+91 98765 43210)</h6>
+              <p class="text-muted small mb-0">Whenever attendance is submitted by class teachers, automated real-time notifications are published here and relayed via SMS.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="content-card-body p-0">
+            <div class="list-group list-group-flush">
+              
+              <!-- Notification 1 -->
+              <div class="list-group-item p-4 border-bottom">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                  <h6 class="mb-1 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i>Attendance Recorded Present</h6>
+                  <small class="text-muted">Today, 08:48 AM</small>
+                </div>
+                <p class="mb-1 text-secondary">Your child <strong>Aarav Sharma (Class 8A)</strong> was marked <strong>Present</strong> for Morning Session. Verified via Classroom Face Recognition.</p>
+                <small class="text-muted"><i class="bi bi-phone me-1"></i> SMS Dispatched to Manoj Sharma</small>
+              </div>
+
+              <!-- Notification 2 -->
+              <div class="list-group-item p-4 border-bottom bg-warning-subtle">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                  <h6 class="mb-1 fw-bold text-warning-emphasis"><i class="bi bi-pencil-square me-2"></i>Your child's attendance record was updated</h6>
+                  <small class="text-muted">15 Oct, 11:20 AM</small>
+                </div>
+                <p class="mb-1 text-secondary">Administrative correction performed by Principal Dr. Rajesh V. Status for Aarav Sharma updated from "Needs Review" to "Present" with verified reason: Teacher confirmed physical presence.</p>
+                <small class="text-muted"><i class="bi bi-shield-check me-1"></i> Audit Trail Verified (Ref: #AUD-9884)</small>
+              </div>
+
+              <!-- Notification 3 -->
+              <div class="list-group-item p-4 border-bottom">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                  <h6 class="mb-1 fw-bold text-danger"><i class="bi bi-x-circle-fill me-2"></i>Your child was marked absent today</h6>
+                  <small class="text-muted">13 Oct, 09:15 AM</small>
+                </div>
+                <p class="mb-1 text-secondary">Aarav Sharma was not verified during Period 1 roll call. Please coordinate with Class Teacher Sunita Devi if this absence was unexcused.</p>
+                <small class="text-muted"><i class="bi bi-phone me-1"></i> SMS Alert Dispatched</small>
+              </div>
+
+              <!-- Notification 4 -->
+              <div class="list-group-item p-4">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                  <h6 class="mb-1 fw-bold text-primary"><i class="bi bi-file-earmark-bar-graph me-2"></i>Monthly attendance report is available</h6>
+                  <small class="text-muted">01 Oct, 10:00 AM</small>
+                </div>
+                <p class="mb-1 text-secondary">The comprehensive September 2026 attendance report for Aarav Sharma has been finalized. Total rate: 98.1%.</p>
+                <a href="statistics.html" class="btn btn-sm btn-outline-primary py-1 mt-1">View Full Report</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+</body>
+</html>

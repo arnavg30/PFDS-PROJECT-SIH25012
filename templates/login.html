@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/dashboard.css">
+  <link rel="stylesheet" href="../static/css/responsive.css">
+  <style>
+    .role-nav-tab {
+      flex: 1;
+      padding: 0.55rem 0.5rem;
+      border: 1px solid var(--border-color);
+      background-color: #F8FAFC;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.86rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .role-nav-tab:hover {
+      background-color: #EBF3FC;
+      color: var(--primary-color);
+      border-color: #CBD5E1;
+    }
+    .role-nav-tab.active {
+      background-color: var(--primary-color);
+      color: #FFFFFF;
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 6px rgba(30, 86, 160, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center py-4" style="min-height: 100vh;">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5 col-xl-4">
+        
+        <!-- Brand Header with Dark Mode Toggle -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <a class="app-brand" href="landing.html">
+            <div class="app-brand-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div>
+              <span class="app-brand-text">EduAttend</span>
+              <span class="app-brand-sub">Smart Attendance System</span>
+            </div>
+          </a>
+          <button type="button" class="btn-theme-toggle" title="Toggle Dark/Light Mode">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+        </div>
+
+        <div class="text-center mb-3">
+          <h4 class="fw-bold text-dark mb-1">Welcome to EduAttend</h4>
+          <p class="text-muted small">Sign in to access your attendance dashboard.</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="card border shadow-sm rounded-4 bg-white p-4">
+
+          <!-- ENTITY SELECTOR MOVED TO TOP -->
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-secondary text-uppercase letter-spacing-1 d-block text-center mb-2">
+              Select Your Role / Entity
+            </label>
+            <div class="d-flex gap-2" id="roleTabs">
+              <button type="button" class="role-nav-tab" data-role="admin" onclick="selectRole('admin')">
+                <i class="bi bi-shield-lock"></i> Admin
+              </button>
+              <button type="button" class="role-nav-tab active" data-role="teacher" onclick="selectRole('teacher')">
+                <i class="bi bi-person-video3"></i> Teacher
+              </button>
+              <button type="button" class="role-nav-tab" data-role="student" onclick="selectRole('student')">
+                <i class="bi bi-mortarboard"></i> Student
+              </button>
+              <button type="button" class="role-nav-tab" data-role="parent" onclick="selectRole('parent')">
+                <i class="bi bi-people"></i> Parent
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Alert -->
+          <div id="loginErrorAlert" class="alert alert-danger py-2 px-3 small d-none" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i> <span id="loginErrorMessage">Invalid username or password.</span>
+          </div>
+
+          <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+            <!-- CSRF Placeholder for Django -->
+            <!-- {% csrf_token %} -->
+
+            <div class="mb-3">
+              <label for="usernameInput" class="form-label fw-semibold text-secondary small" id="usernameLabel">Teacher Email or School ID</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control border-start-0" id="usernameInput" placeholder="teacher.sunita@school.gov.in" required value="teacher.sunita@school.gov.in">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="passwordInput" class="form-label fw-semibold text-secondary small mb-0">Password</label>
+                <a href="forgot_password.html" class="small text-decoration-none">Forgot password?</a>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control border-start-0 border-end-0" id="passwordInput" placeholder="••••••••" required value="EduPassword123">
+                <button class="btn btn-outline-secondary border-start-0 toggle-password-btn" type="button" data-target="passwordInput" title="Toggle password visibility">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="rememberMeCheck" checked>
+              <label class="form-check-label small text-secondary" for="rememberMeCheck">Remember me on this browser</label>
+            </div>
+
+            <!-- Sign In Button -->
+            <button type="submit" id="btnLoginSubmit" class="btn btn-primary w-100 py-2 fw-semibold mb-2">
+              <span id="loginSpinner" class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+              <span id="loginBtnText">Sign In</span>
+            </button>
+
+            <!-- Sign Up Button Added Alongside Sign In -->
+            <a href="signup.html" id="btnSignUpLink" class="btn btn-outline-secondary w-100 py-2 fw-semibold">
+              <i class="bi bi-person-plus me-1"></i> Don't have an account? Sign Up
+            </a>
+          </form>
+
+        </div>
+
+        <div class="text-center mt-3">
+          <a href="landing.html" class="text-muted small text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i> Back to EduAttend Home
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/js/main.js"></script>
+  <script>
+    let designatedRole = 'teacher';
+
+    const credentialsMap = {
+      admin: {
+        email: 'admin@school.gov.in',
+        label: 'Admin Email or Registration ID',
+        desc: 'Signing in as <strong>Administrator</strong> (Dr. Rajesh V.)'
+      },
+      teacher: {
+        email: 'teacher.sunita@school.gov.in',
+        label: 'Teacher Email or School ID',
+        desc: 'Signing in as <strong>Teacher</strong> (Sunita Devi)'
+      },
+      student: {
+        email: 'student.aarav@school.gov.in',
+        label: 'Student ID or Admission Number',
+        desc: 'Signing in as <strong>Student</strong> (Aarav Sharma - 8A)'
+      },
+      parent: {
+        email: 'parent.sharma@school.gov.in',
+        label: 'Registered Parent Mobile or Email',
+        desc: 'Signing in as <strong>Parent / Guardian</strong> (Manoj Sharma)'
+      }
+    };
+
+    function selectRole(role) {
+      designatedRole = role;
+      
+      // Update UI active tab state
+      document.querySelectorAll('#roleTabs .role-nav-tab').forEach(tab => {
+        if (tab.getAttribute('data-role') === role) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+
+      // Update inputs
+      const roleData = credentialsMap[role];
+      document.getElementById('usernameInput').value = roleData.email;
+      document.getElementById('usernameLabel').innerText = roleData.label;
+      
+      // Update signup link to preserve chosen role
+      document.getElementById('btnSignUpLink').href = `signup.html?role=${role}`;
+      showToast('Role Selected', `Configured login form for ${role.toUpperCase()}`, 'info');
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const spinner = document.getElementById('loginSpinner');
+      const btnText = document.getElementById('loginBtnText');
+      const btn = document.getElementById('btnLoginSubmit');
+      const errorAlert = document.getElementById('loginErrorAlert');
+      const password = document.getElementById('passwordInput').value.trim();
+
+      if (password === 'wrong') {
+        errorAlert.classList.remove('d-none');
+        return;
+      } else {
+        errorAlert.classList.add('d-none');
+      }
+
+      spinner.classList.remove('d-none');
+      btnText.innerText = 'Authenticating...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        if (designatedRole === 'admin') window.location.href = 'admin/dashboard.html';
+        else if (designatedRole === 'teacher') window.location.href = 'teacher/dashboard.html';
+        else if (designatedRole === 'student') window.location.href = 'student/dashboard.html';
+        else if (designatedRole === 'parent') window.location.href = 'parent/dashboard.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>

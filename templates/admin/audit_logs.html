@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrative Audit Logs - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Admin Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Overview</li>
+        <li><a href="dashboard.html" class="nav-item-link"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+
+        <li class="sidebar-section-title">Academic Management</li>
+        <li><a href="students.html" class="nav-item-link"><i class="bi bi-people-fill"></i> <span>Students</span></a></li>
+        <li><a href="teachers.html" class="nav-item-link"><i class="bi bi-person-badge-fill"></i> <span>Teachers</span></a></li>
+        <li><a href="parents.html" class="nav-item-link"><i class="bi bi-person-heart"></i> <span>Parents</span></a></li>
+        <li><a href="classes.html" class="nav-item-link"><i class="bi bi-door-open-fill"></i> <span>Classes</span></a></li>
+
+        <li class="sidebar-section-title">Records & Governance</li>
+        <li><a href="attendance.html" class="nav-item-link"><i class="bi bi-calendar2-check-fill"></i> <span>Attendance Records</span></a></li>
+        <li><a href="reports.html" class="nav-item-link"><i class="bi bi-file-earmark-bar-graph-fill"></i> <span>Reports & Analytics</span></a></li>
+        <li><a href="audit_logs.html" class="nav-item-link active"><i class="bi bi-shield-shaded"></i> <span>Audit Logs</span></a></li>
+        <li><a href="settings.html" class="nav-item-link"><i class="bi bi-gear-fill"></i> <span>Settings</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar bg-primary text-white">AD</div>
+          <div class="user-info">
+            <div class="user-name">Dr. Rajesh V.</div>
+            <div class="user-role-label">Principal / Admin</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <h1 class="page-title">Administrative Audit Trail</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-outline-secondary btn-sm" onclick="exportTableToCSV('auditLogsTable', 'admin_audit_trail.csv')">
+            <i class="bi bi-download me-1"></i> Export Audit Log
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="card border bg-white p-3 rounded-3 shadow-sm mb-4">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-file-lock2-fill text-primary fs-3"></i>
+              <div>
+                <h6 class="fw-bold mb-0">Immutable Educational Audit System</h6>
+                <p class="text-muted small mb-0">All changes made to attendance statuses, teacher enrollments, and system configurations are permanently logged.</p>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <input type="text" class="form-control form-control-sm" placeholder="Search audit logs..." data-table-search="auditLogsTable" style="width: 220px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="content-card-body p-0">
+            <div class="table-responsive">
+              <table class="custom-table" id="auditLogsTable">
+                <thead>
+                  <tr>
+                    <th>Log ID</th>
+                    <th>Timestamp</th>
+                    <th>Administrator</th>
+                    <th>Action Taken</th>
+                    <th>Record Target</th>
+                    <th>Previous Value</th>
+                    <th>Updated Value</th>
+                    <th>Mandatory Reason / Justification</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>#AUD-9912</code></td>
+                    <td>17 Oct 2026, 09:30 AM</td>
+                    <td>Dr. Rajesh V. (Admin)</td>
+                    <td><span class="badge bg-warning-subtle text-dark">Status Correction</span></td>
+                    <td>Aarav Sharma (STU-101)</td>
+                    <td><span class="badge bg-danger-subtle text-danger">Absent</span></td>
+                    <td><span class="badge bg-success-subtle text-success">Present</span></td>
+                    <td><em>"Student was participating in inter-school science debate with approval letter from Headmaster."</em></td>
+                  </tr>
+
+                  <tr>
+                    <td><code>#AUD-9910</code></td>
+                    <td>16 Oct 2026, 04:15 PM</td>
+                    <td>Dr. Rajesh V. (Admin)</td>
+                    <td><span class="badge bg-info-subtle text-dark">Enrollment Add</span></td>
+                    <td>Diya Sharma (STU-109)</td>
+                    <td><span class="badge bg-light text-muted">None</span></td>
+                    <td><span class="badge bg-primary-subtle text-primary">Class 5B</span></td>
+                    <td><em>"New mid-term transfer admission from Govt Primary School Bilaspur."</em></td>
+                  </tr>
+
+                  <tr>
+                    <td><code>#AUD-9884</code></td>
+                    <td>15 Oct 2026, 11:20 AM</td>
+                    <td>Dr. Rajesh V. (Admin)</td>
+                    <td><span class="badge bg-warning-subtle text-dark">Status Correction</span></td>
+                    <td>Rohan Verma (STU-103)</td>
+                    <td><span class="badge bg-warning-subtle text-warning">Needs Review</span></td>
+                    <td><span class="badge bg-success-subtle text-success">Present</span></td>
+                    <td><em>"Teacher confirmed physical attendance after facial recognition lighting glitch."</em></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+</body>
+</html>

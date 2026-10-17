@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard - EduAttend</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/dashboard.css">
+  <link rel="stylesheet" href="../../static/css/responsive.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Teacher Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a class="app-brand" href="../landing.html">
+          <div class="app-brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <span class="app-brand-text">EduAttend</span>
+            <span class="app-brand-sub">Teacher Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-section-title">Teaching Workspace</li>
+        <li><a href="dashboard.html" class="nav-item-link active"><i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a></li>
+        <li><a href="classes.html" class="nav-item-link"><i class="bi bi-collection-fill"></i> <span>My Classes</span></a></li>
+        <li><a href="take_attendance.html" class="nav-item-link"><i class="bi bi-camera-fill text-warning"></i> <span>Take Attendance</span></a></li>
+
+        <li class="sidebar-section-title">Verification & Records</li>
+        <li><a href="review_attendance.html" class="nav-item-link"><i class="bi bi-ui-checks"></i> <span>Attendance Review</span></a></li>
+        <li><a href="history.html" class="nav-item-link"><i class="bi bi-calendar2-range-fill"></i> <span>Attendance History</span></a></li>
+        <li><a href="reports.html" class="nav-item-link"><i class="bi bi-bar-chart-line-fill"></i> <span>Class Reports</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" style="background: #00796B;">SD</div>
+          <div class="user-info">
+            <div class="user-name">Sunita Devi</div>
+            <div class="user-role-label">Class Teacher - 8A</div>
+          </div>
+          <a href="../login.html" class="ms-auto text-white-50"><i class="bi bi-box-arrow-right fs-5"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" id="sidebarToggleBtn"><i class="bi bi-list"></i></button>
+          <div>
+            <h1 class="page-title">Welcome back, Sunita Ji</h1>
+            <small class="text-muted"><i class="bi bi-calendar-event me-1"></i> Today: Saturday, 17 October 2026</small>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Role Switcher -->
+          <div class="d-none d-md-flex align-items-center me-2">
+            <span class="text-muted small me-2">Role:</span>
+            <select class="form-select form-select-sm" id="demoRoleSelector" style="width: 120px;">
+              <option value="teacher" selected>Teacher</option>
+              <option value="admin">Admin</option>
+              <option value="student">Student</option>
+              <option value="parent">Parent</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn-theme-toggle me-2" title="Toggle Dark/Light Mode">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+
+          <a href="take_attendance.html" class="btn btn-primary btn-sm px-3 shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Take Attendance
+          </a>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- Top Metric Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Classes Assigned</div>
+                <div class="stat-value">2</div>
+                <div class="stat-trend text-muted">Class 8A & Class 7B</div>
+              </div>
+              <div class="stat-icon icon-blue"><i class="bi bi-door-open"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">My Students</div>
+                <div class="stat-value">76</div>
+                <div class="stat-trend text-muted">40 in 8A, 36 in 7B</div>
+              </div>
+              <div class="stat-icon icon-teal"><i class="bi bi-people"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Sessions Today</div>
+                <div class="stat-value text-success">1 / 2</div>
+                <div class="stat-trend text-success"><i class="bi bi-check-circle-fill me-1"></i> 8A Completed</div>
+              </div>
+              <div class="stat-icon icon-green"><i class="bi bi-calendar-check"></i></div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Awaiting Review</div>
+                <div class="stat-value text-warning">2</div>
+                <div class="stat-trend text-warning"><i class="bi bi-exclamation-triangle-fill me-1"></i> Low confidence matches</div>
+              </div>
+              <div class="stat-icon icon-orange"><i class="bi bi-ui-checks"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Classes Grid -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold text-dark mb-0"><i class="bi bi-mortarboard text-primary me-2"></i>My Assigned Classes</h5>
+          <a href="classes.html" class="small text-decoration-none">View All Class Details &rarr;</a>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <!-- Class Card 1: 8A -->
+          <div class="col-md-6">
+            <div class="card border rounded-3 bg-white shadow-sm h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div>
+                    <span class="badge bg-primary-subtle text-primary border mb-1">Primary Class Teacher</span>
+                    <h4 class="fw-bold mb-0">Class 8th - Section A</h4>
+                    <p class="text-muted small mb-0">General Science & Morning Assembly</p>
+                  </div>
+                  <span class="badge-status badge-present"><i class="bi bi-check-circle-fill"></i> Completed Today</span>
+                </div>
+
+                <div class="row g-2 text-center my-3 bg-light p-2 rounded">
+                  <div class="col-4">
+                    <span class="text-muted small">Total</span>
+                    <div class="fw-bold text-dark">40</div>
+                  </div>
+                  <div class="col-4">
+                    <span class="text-muted small">Present</span>
+                    <div class="fw-bold text-success">38</div>
+                  </div>
+                  <div class="col-4">
+                    <span class="text-muted small">Review</span>
+                    <div class="fw-bold text-warning">2</div>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                  <a href="review_attendance.html" class="btn btn-warning btn-sm w-100 fw-semibold text-dark">
+                    <i class="bi bi-ui-checks me-1"></i> Review Discrepancies (2)
+                  </a>
+                  <a href="take_attendance.html?class=8A" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-repeat"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Class Card 2: 7B -->
+          <div class="col-md-6">
+            <div class="card border rounded-3 bg-white shadow-sm h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div>
+                    <span class="badge bg-light text-secondary border mb-1">Subject Teacher (Science)</span>
+                    <h4 class="fw-bold mb-0">Class 7th - Section B</h4>
+                    <p class="text-muted small mb-0">Scheduled Period 4 (11:30 AM)</p>
+                  </div>
+                  <span class="badge bg-light text-secondary border"><i class="bi bi-clock me-1"></i> Pending</span>
+                </div>
+
+                <div class="row g-2 text-center my-3 bg-light p-2 rounded">
+                  <div class="col-4">
+                    <span class="text-muted small">Total</span>
+                    <div class="fw-bold text-dark">36</div>
+                  </div>
+                  <div class="col-4">
+                    <span class="text-muted small">Present</span>
+                    <div class="fw-bold text-muted">-</div>
+                  </div>
+                  <div class="col-4">
+                    <span class="text-muted small">Absent</span>
+                    <div class="fw-bold text-muted">-</div>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                  <a href="take_attendance.html?class=7B" class="btn btn-primary btn-sm w-100 fw-semibold">
+                    <i class="bi bi-camera-video me-1"></i> Take Attendance Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Attendance Sessions -->
+        <div class="content-card">
+          <div class="content-card-header">
+            <h5 class="content-card-title"><i class="bi bi-clock-history text-primary"></i> My Recent Attendance Submissions</h5>
+            <a href="history.html" class="small text-decoration-none">View Full History</a>
+          </div>
+          <div class="content-card-body p-0">
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Class</th>
+                    <th>Method</th>
+                    <th>Present Count</th>
+                    <th>Flagged / Review</th>
+                    <th>Submission State</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Today, 08:45 AM</td>
+                    <td>Class 8A</td>
+                    <td><span class="badge bg-light text-dark border"><i class="bi bi-camera me-1"></i> Face Recognition</span></td>
+                    <td><strong class="text-success">38</strong> / 40</td>
+                    <td><span class="badge bg-warning-subtle text-warning">2 Pending Review</span></td>
+                    <td><span class="badge bg-info-subtle text-info"><i class="bi bi-pencil"></i> In Review</span></td>
+                    <td><a href="review_attendance.html" class="btn btn-sm btn-outline-warning py-1">Review & Lock</a></td>
+                  </tr>
+                  <tr>
+                    <td>16 Oct 2026</td>
+                    <td>Class 8A</td>
+                    <td><span class="badge bg-light text-dark border"><i class="bi bi-camera me-1"></i> Face Recognition</span></td>
+                    <td><strong class="text-success">39</strong> / 40</td>
+                    <td><span class="text-muted">0</span></td>
+                    <td><span class="badge-status badge-present"><i class="bi bi-lock-fill"></i> Locked</span></td>
+                    <td><a href="history.html" class="btn btn-sm btn-outline-secondary py-1">View Record</a></td>
+                  </tr>
+                  <tr>
+                    <td>15 Oct 2026</td>
+                    <td>Class 7B</td>
+                    <td><span class="badge bg-light text-dark border"><i class="bi bi-card-checklist me-1"></i> Manual Fallback</span></td>
+                    <td><strong class="text-success">35</strong> / 36</td>
+                    <td><span class="text-muted">0</span></td>
+                    <td><span class="badge-status badge-present"><i class="bi bi-lock-fill"></i> Locked</span></td>
+                    <td><a href="history.html" class="btn btn-sm btn-outline-secondary py-1">View Record</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="globalToastContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/js/main.js"></script>
+</body>
+</html>
